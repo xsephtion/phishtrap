@@ -267,7 +267,6 @@ export function EmailSimulator() {
   const [revealed, setRevealed] = useState<boolean>(false); // whether we've revealed the answer for current email
   const [showAllExplanations, setShowAllExplanations] =
     useState<boolean>(false);
-  const router = useRouter();
 
   // on mount, try to load progress
   useEffect(() => {
@@ -378,7 +377,6 @@ export function EmailSimulator() {
 
     // We'll do a naive approach: split by first matching cue occurrences and wrap them.
     // For simplicity, find all cue substrings and mark them (case-insensitive).
-    let html = body;
     // Escape special markup - but since we'll render JSX elements, do splitting instead.
 
     // We'll build an array of parts using a simple loop that finds earliest next cue.

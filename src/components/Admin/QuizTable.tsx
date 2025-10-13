@@ -13,7 +13,6 @@ import {
 
 import {
   Empty,
-  EmptyContent,
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
@@ -21,7 +20,6 @@ import {
 } from "@/components/ui/empty";
 
 import axios from "axios";
-import { Button } from "../ui/button";
 import { BoxIcon } from "lucide-react";
 
 type QuizType = "simulation" | "choices";

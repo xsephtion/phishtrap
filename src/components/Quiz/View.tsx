@@ -21,7 +21,7 @@ interface QuizProps {
   onComplete?: (answers: Record<string, number>) => void;
 }
 
-export function PhishingQuiz({ totalQuestions = 10, onComplete }: QuizProps) {
+export function PhishingQuiz({ totalQuestions = 10 }: QuizProps) {
   const { data } = useSession();
 
   const [questions, setQuestions] = useState<Question[]>(
@@ -67,9 +67,9 @@ export function PhishingQuiz({ totalQuestions = 10, onComplete }: QuizProps) {
     }
   }
 
-  function goBack() {
-    setCurrentIndex((i) => Math.max(i - 1, 0));
-  }
+  // function goBack() {
+  //   setCurrentIndex((i) => Math.max(i - 1, 0));
+  // }
 
   function skip() {
     setAnswers((prev) => ({

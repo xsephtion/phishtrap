@@ -56,7 +56,7 @@ export function LandingPage() {
         <div className="mb-10 text-center">
           <h1 className="text-3xl font-bold">Phishing Test</h1>
           <p className="text-sm text-muted-foreground mt-2">
-            Choose how you'd like to test your phishing awareness.
+            Choose how you&apos;d like to test your phishing awareness.
           </p>
         </div>
 

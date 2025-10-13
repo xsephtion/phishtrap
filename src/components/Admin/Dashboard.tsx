@@ -95,7 +95,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                       data?.user?.email
                         ? data?.user?.email[1].toUpperCase()
                         : ""
-                    }` ?? ""}
+                    }`}
                   </AvatarFallback>
                 </Avatar>
               </Button>
