@@ -7,6 +7,10 @@ import { Badge } from "@/components/ui/badge";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
 import { Tooltip } from "@/components/ui/tooltip";
+import { useSession } from "next-auth/react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { Toaster, toast } from "sonner";
 
 /**
  * EmailSimulator
@@ -247,9 +251,10 @@ function saveScore(correct: number, attempts: number) {
 /* ----------------------------- Component ----------------------------- */
 
 export function EmailSimulator() {
+  const { data } = useSession();
   const examples = useMemo(() => EXAMPLES, []);
   const exampleCount = examples.length;
-
+  const [disabledAllButtons, setDisabledAllButtons] = useState(false);
   // Hydrated client state
   const [index, setIndex] = useState<number>(0);
   const [answers, setAnswers] = useState<Record<string, boolean>>({});
@@ -262,6 +267,7 @@ export function EmailSimulator() {
   const [revealed, setRevealed] = useState<boolean>(false); // whether we've revealed the answer for current email
   const [showAllExplanations, setShowAllExplanations] =
     useState<boolean>(false);
+  const router = useRouter();
 
   // on mount, try to load progress
   useEffect(() => {
@@ -272,6 +278,10 @@ export function EmailSimulator() {
     } catch {
       /* ignore */
     }
+
+    return () => {
+      setDisabledAllButtons(false);
+    };
   }, []);
 
   // persist progress when index or answers change
@@ -310,6 +320,29 @@ export function EmailSimulator() {
     setRevealed(true);
   }
 
+  async function onEnd() {
+    setDisabledAllButtons(true);
+    const userData = {
+      email: data?.user?.email,
+      quiz: {
+        quizType: "simulation",
+        score: score.correct,
+        date: new Date().toISOString(),
+      },
+    };
+
+    try {
+      await axios.post("/api/quiz/submit", userData).then(() => {
+        toast.success(`Successfully submitted your Simulation Quiz!`);
+      });
+    } catch (error) {
+      toast.error(`Failed to submit quiz : ${error}`);
+      console.error("Failed to submit quiz :", error);
+    } finally {
+      resetProgress();
+    }
+  }
+
   function goNext() {
     setShowAllExplanations(false);
     setSelected(undefined);
@@ -330,6 +363,7 @@ export function EmailSimulator() {
     setScore({ correct: 0, attempts: 0 });
     setSelected(undefined);
     setRevealed(false);
+    setDisabledAllButtons(false);
     try {
       localStorage.removeItem(LS_PROGRESS_KEY);
       localStorage.removeItem(LS_SCORE_KEY);
@@ -422,17 +456,17 @@ export function EmailSimulator() {
         <h1 className="text-xl font-bold">Email Simulation — Fake vs Real</h1>
         <div className="flex items-center space-x-3">
           <Badge variant="secondary">
-            Progress: {index + 1}/{exampleCount}
+            Progress: {index + 1}/{exampleCount + 1}
           </Badge>
           <Badge variant="outline">
-            Score: {score.correct} / {Math.max(1, score.attempts)} ({percent}%)
+            Score: {score.correct} / {exampleCount + 1} ({percent}%)
           </Badge>
           <Button size="sm" variant="ghost" onClick={resetProgress}>
             Reset
           </Button>
         </div>
       </header>
-
+      <Toaster />
       <Card>
         <CardContent>
           <div className="flex items-start justify-between gap-4">
@@ -479,7 +513,7 @@ export function EmailSimulator() {
                   onClick={() => {
                     if (selected) handleGuess(selected);
                   }}
-                  disabled={!selected}
+                  disabled={!selected || disabledAllButtons}
                 >
                   Submit
                 </Button>
@@ -491,6 +525,7 @@ export function EmailSimulator() {
                     setRevealed(true);
                     setShowAllExplanations(true);
                   }}
+                  disabled={disabledAllButtons}
                 >
                   Reveal Answer
                 </Button>
@@ -561,13 +596,17 @@ export function EmailSimulator() {
 
         <CardFooter className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Button variant="ghost" onClick={goPrev} disabled={index === 0}>
+            <Button
+              variant="ghost"
+              onClick={goPrev}
+              disabled={index === 0 || disabledAllButtons}
+            >
               Back
             </Button>
             <Button
               variant="ghost"
               onClick={goNext}
-              disabled={index === exampleCount - 1}
+              disabled={index === exampleCount - 1 || disabledAllButtons}
             >
               Next
             </Button>
@@ -578,6 +617,7 @@ export function EmailSimulator() {
                 setShowAllExplanations(true);
                 setRevealed(true);
               }}
+              disabled={disabledAllButtons}
             >
               Review All (reveal)
             </Button>
@@ -589,14 +629,6 @@ export function EmailSimulator() {
                 ? "No attempts yet"
                 : `Correct: ${score.correct} / ${score.attempts} (${percent}%)`}
             </div>
-            <Button
-              size="sm"
-              onClick={() => {
-                /* optional: export progress or show modal */
-              }}
-            >
-              Export
-            </Button>
           </div>
         </CardFooter>
       </Card>
@@ -685,7 +717,7 @@ export function EmailSimulator() {
                     goNext();
                   } else {
                     // reached end — optionally reset or stay
-                    setIndex(exampleCount - 1);
+                    onEnd();
                   }
                 }}
               >

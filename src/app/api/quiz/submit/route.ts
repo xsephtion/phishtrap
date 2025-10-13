@@ -16,11 +16,12 @@ export async function POST(request: NextRequest) {
 
 async function addQuiz(body: QuizInterface) {
   const findOne = await Quiz.findOne({ email: body.email });
-  const findOneQuiz = findOne.quiz;
+  const findOneQuiz = findOne?.quiz ?? [];
   findOneQuiz.push(body.quiz);
   const update = await Quiz.findOneAndUpdate(
     { email: body.email },
-    { quiz: findOneQuiz }
+    { quiz: findOneQuiz },
+    { upsert: true }
   );
   return update;
 }
