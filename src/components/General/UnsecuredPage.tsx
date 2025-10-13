@@ -2,7 +2,7 @@
 import { ReactNode, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import Loading from "./Loading";
+
 
 export function UnsecuredPage({ children }: { children: ReactNode }) {
   const router = useRouter();
@@ -20,7 +20,7 @@ export function UnsecuredPage({ children }: { children: ReactNode }) {
 
   // Wait until session is known before rendering children
   if (status === "loading") {
-    return <Loading />;
+    return <div>Loading....</div>;
   }
 
   return <>{children}</>;

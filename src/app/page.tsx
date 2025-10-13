@@ -2,13 +2,12 @@
 import { DashboardLayout } from "@/components/Admin/Dashboard";
 import QuizTable from "@/components/Admin/QuizTable";
 import { LandingPage } from "@/components/General/LandingPage";
-import StunningAiLoader from "@/components/General/Loading";
 import { useSession } from "next-auth/react";
 
 export default function Home() {
   const { data: session, status } = useSession();
   if (status === "loading") {
-    <StunningAiLoader />;
+    <div>Loading...</div>;
   }
 
   // console.log("session", session);
