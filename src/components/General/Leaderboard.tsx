@@ -10,6 +10,9 @@ import {
 } from "@/components/ui/table";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { format } from "date-fns";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { QuizLeaderboard } from "@/models/Quiz";
 
 // Example data structure
 interface LeaderboardEntry {
@@ -19,40 +22,25 @@ interface LeaderboardEntry {
   date: Date;
 }
 
-const leaderboardData: LeaderboardEntry[] = [
-  {
-    name: "Alice Johnson",
-    score: 95,
-    testType: "Multiple Choice",
-    date: new Date("2025-10-10"),
-  },
-  {
-    name: "Bob Smith",
-    score: 92,
-    testType: "Simulation Exam",
-    date: new Date("2025-10-11"),
-  },
-  {
-    name: "Charlie Brown",
-    score: 89,
-    testType: "Multiple Choice",
-    date: new Date("2025-10-12"),
-  },
-  {
-    name: "Diana Prince",
-    score: 87,
-    testType: "Simulation Exam",
-    date: new Date("2025-10-13"),
-  },
-  {
-    name: "Evan Wright",
-    score: 85,
-    testType: "Multiple Choice",
-    date: new Date("2025-10-14"),
-  },
-];
 
 export default function LeaderboardPage() {
+  const [data, setData] = useState<QuizLeaderboard[]>([]);
+
+  async function fetchLeaderboardData() {
+    const leaderboardData = await axios.get("/api/quiz/view", {
+      params: { all: true },
+    });
+    const jsonData = await leaderboardData.data.result.quiz;
+    console.log("jsonData: ", jsonData);
+    setData(
+      jsonData.filter((a: QuizLeaderboard) => a.email !== "admin@mico.com")
+    );
+  }
+
+  useEffect(() => {
+    fetchLeaderboardData();
+  }, []);
+
   return (
     <main className="min-h-screen py-10 px-4 md:px-10">
       <Card className="max-w-4xl mx-auto">
@@ -72,16 +60,16 @@ export default function LeaderboardPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {leaderboardData
-                  .sort((a, b) => b.score - a.score)
+                {data
+                  .sort((a, b) => parseInt(b.score) - parseInt(a.score))
                   .map((entry, index) => (
                     <TableRow key={index}>
                       <TableCell className="text-center font-medium">
                         {index + 1}
                       </TableCell>
-                      <TableCell>{entry.name}</TableCell>
+                      <TableCell>{entry.email}</TableCell>
                       <TableCell>{entry.score}</TableCell>
-                      <TableCell>{entry.testType}</TableCell>
+                      <TableCell>{entry.quizType}</TableCell>
                       <TableCell className="text-right text-muted-foreground">
                         {format(entry.date, "MMM d, yyyy")}
                       </TableCell>

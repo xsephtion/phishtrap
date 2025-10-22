@@ -1,0 +1,135 @@
+.fb-page {
+    font-family: Helvetica, Arial, sans-serif;
+    background: #f0f2f5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.fb-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+    max-width: 980px;
+    width: 100%;
+}
+
+.fb-left {
+    flex: 1;
+    margin-right: 60px;
+}
+
+.fb-logo {
+    height: 106px;
+    margin: -28px;
+}
+
+.fb-subtitle {
+    font-size: 28px;
+    font-weight: normal;
+    line-height: 32px;
+}
+
+.fb-right {
+    width: 396px;
+}
+
+.fb-card {
+    background: white;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+.fb-card input {
+    margin-bottom: 12px;
+    padding: 14px;
+    font-size: 16px;
+    border: 1px solid #dddfe2;
+    border-radius: 6px;
+}
+
+.login-button {
+    background: #1877f2;
+    color: white;
+    border: none;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 14px;
+    margin-bottom: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.create-account-button {
+    background: #42b72a;
+    color: white;
+    border: none;
+    font-size: 17px;
+    font-weight: bold;
+    padding: 14px;
+    margin-top: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.forgot-link {
+    text-align: center;
+    color: #1877f2;
+    font-size: 14px;
+    text-decoration: none;
+    margin-bottom: 12px;
+}
+
+.fb-page-create {
+    text-align: center;
+    margin-top: 28px;
+    font-size: 14px;
+}
+
+.fb-page-create a {
+    font-weight: bold;
+    color: #000;
+    text-decoration: none;
+}
+
+.fb-footer {
+    margin-top: auto;
+    width: 100%;
+    padding: 40px 0;
+    background: none;
+    text-align: center;
+}
+
+.fb-footer ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.fb-footer li {
+    font-size: 12px;
+    color: #737373;
+}
+
+.fb-footer a {
+    color: #737373;
+    text-decoration: none;
+}
+
+.fb-footer a:hover {
+    text-decoration: underline;
+}
+
+.fb-copyright {
+    font-size: 12px;
+    color: #737373;
+    margin-top: 10px;
+}

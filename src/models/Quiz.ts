@@ -6,6 +6,13 @@ interface QuizDetails {
   date: string;
 }
 
+export interface QuizLeaderboard {
+  quizType: string;
+  score: string;
+  date: string;
+  email: string;
+}
+
 export interface QuizInterface {
   email: string;
   quiz: QuizDetails[] | QuizDetails;

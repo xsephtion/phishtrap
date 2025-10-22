@@ -1,12 +1,27 @@
 "use client";
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-
+import PhishSimulator from "../PhishingSimulator/PhishSimulatorDialog";
 
 export function UnsecuredPage({ children }: { children: ReactNode }) {
   const router = useRouter();
-  const { status } = useSession();
+  const { status, data } = useSession();
+  const [isActive, setIsActive] = useState(false);
+
+  function disableDialog() {
+    setIsActive(false);
+  }
+
+  useEffect(() => {
+    console.log("isactive: ", isActive);
+  }, [isActive]);
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      setIsActive(true);
+    }
+  }, [status]);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -23,5 +38,15 @@ export function UnsecuredPage({ children }: { children: ReactNode }) {
     return <div>Loading....</div>;
   }
 
-  return <>{children}</>;
+  return (
+    <>
+      <PhishSimulator
+        active={isActive}
+        email={data?.user?.email ?? ""}
+        fakeTargetPath="/facebook"
+        callback={disableDialog}
+      />
+      {children}
+    </>
+  );
 }

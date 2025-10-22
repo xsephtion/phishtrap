@@ -70,7 +70,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         </div>
 
         <div className="flex items-center gap-4">
-          <div className="relative">
+          {/* <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
             <Input
               placeholder="Search workflows, logs..."
@@ -80,7 +80,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           <Button variant="ghost" size="icon" className="relative">
             <Bell className="w-4 h-4" />
             <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-          </Button>
+          </Button> */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon">

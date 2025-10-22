@@ -111,6 +111,7 @@ export function PhishingQuiz({ totalQuestions = 10 }: QuizProps) {
 
   return (
     <Card className="max-w-lg mx-auto mt-8">
+      
       <CardContent className="space-y-4">
         <header className="mb-4 flex items-center justify-between">
           <h1 className="text-xl font-bold">Discerning Phishing Emails</h1>
