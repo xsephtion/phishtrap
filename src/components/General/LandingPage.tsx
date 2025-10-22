@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useSession } from "next-auth/react";
+import SplitText from "@/components/ReactBits/SplitText";
 
 export const metadata: Metadata = {
   title: "Phishing Test",
@@ -25,7 +26,7 @@ const ChoiceCard: React.FC<{
 }> = ({ title, description, href, cta = "Start" }) => {
   const { data } = useSession();
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full max-w-md ">
       <CardHeader>
         <CardTitle className="text-lg font-medium">{title}</CardTitle>
         <CardDescription className="text-sm text-muted-foreground">
@@ -51,11 +52,23 @@ const ChoiceCard: React.FC<{
 
 export function LandingPage() {
   return (
-    <main className="min-h-screen bg-surface-50 flex items-center justify-center p-6">
+    <main className="min-h-screen bg-surface-50 flex items-center justify-center p-6 bg-gradient-to-r from-blue-500 to-purple-500">
       <section className="w-full max-w-4xl">
-        <div className="mb-10 text-center">
-          <h1 className="text-3xl font-bold">Phishing Test</h1>
-          <p className="text-sm text-muted-foreground mt-2">
+        <div className="mb-15 text-center">
+          <SplitText
+            text="Phishing Test"
+            className="text-9xl font-bold text-center p-2 text-white"
+            delay={100}
+            duration={0.6}
+            ease="power3.out"
+            splitType="chars"
+            from={{ opacity: 0, y: 40 }}
+            to={{ opacity: 1, y: 0 }}
+            threshold={0.1}
+            rootMargin="100px"
+            textAlign="center"
+          />
+          <p className="text-sm text-muted-foreground text-white">
             Choose how you&apos;d like to test your phishing awareness.
           </p>
         </div>
